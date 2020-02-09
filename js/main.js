@@ -1,73 +1,70 @@
-'use strict';
-
+"use strict";
 
 var COUNT = 25;
 var MESSAGES = [
-    'Всё отлично!',
-    'В целом всё неплохо. Но не всё.',
-    'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-    'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-    'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-    'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
-  ];
-  var NAMES = ['Мадам Бовари', 'Профессор Преображенский', 'Акакий Акакиевич', 'Крошка Цахес', 'Мамаша Кураж', 'Сонечка Мармеладова'];
+  "Всё отлично!",
+  "Вцелом, всё неплохо. Но не всё.",
+  "Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.",
+  "Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.",
+  "Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.",
+  "Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!"
+];
+var NAMES = [
+  "Мадам Бовари",
+  "Профессор Преображенский",
+  "Акакий Акакиевич",
+  "Крошка Цахес",
+  "Мамаша Кураж",
+  "Сонечка Мармеладова"
+];
+var DESCRIPTIONS = [
+  "В самом деле, что может быть лучше – сидеть вечером с книжкой у камина? Горит лампа, в окна стучится ветер...",
+  "Никогда не читайте перед обедом советских газет...",
+  "Вряд ли где можно было найти человека, который так жил бы в своей должности",
+  "Я ничего на свете так не страшусь и не избегаю, как палящих лучей солнца",
+  "Коль торговать, не всё равно ли, свинцом иль сыром торговать?",
+  "Бог такого ужаса не допустит!"
+];
 
 // Генерируем случайное число
-var getRandomNumber = function (number) {
-  return Math.floor(Math.random() * number);
+var getRandomNumber = function(minNumber, maxNumber) {
+  var randomNum = Math.floor(Math.random() * maxNumber);
+  return randomNum > minNumber ? randomNum : minNumber;
 };
 
-getRandomNumber();
-
-// Генерируем случайное число диапазона
-var getRandomRangeNumber = function (minNumber, maxNumber) {
-  var number = minNumber + Math.random() * (maxNumber + 1 - minNumber);
-  return Math.floor(number);
-};
-getRandomRangeNumber(15, 200);
-
-// Генерируем случайный элемент списка
-var getRandomElement = function (elementList) {
-  return elementList[getRandomNumber(elementList.length - 1)];
-};
-getRandomElement();
-
-// Генерируем комментарий
-var createComment = function () {
-  var comment = {};
-  comment.avatar = 'img/avatar-' + getRandomNumber(6) + '.svg';
-  comment.message = getRandomElement(MESSAGES);
-  comment.name = getRandomElement(NAMES);
-  return comment;
+var createPhotoObj = function (index) {
+  var photoCard = {
+    url: 'photos/' + (index + 1) + '.jpg',
+    description: DESCRIPTIONS[getRandomNumber(0, DESCRIPTIONS.length)],
+    likes: getRandomNumber(15, 200),
+    comments:[
+      {
+        avatar: 'img/avatar-' + getRandomNumber(1, 6) + '.svg',
+        message: MESSAGES[getRandomNumber(0, MESSAGES.length)],
+        name: NAMES[getRandomNumber(0, NAMES.length)]
+      },
+      {
+        avatar: 'img/avatar-' + getRandomNumber(1, 6) + '.svg',
+        message: MESSAGES[getRandomNumber(0, MESSAGES.length)],
+        name: NAMES[getRandomNumber(0, NAMES.length)]
+      }
+    ]
+  };
+  return photoCard
 };
 
-// Генерируем список комментариев
-var createCommentList = function (commentsCount) {
-  var comments = [];
-  for (var i = 0; i < commentsCount; i++) {
-    comments[i] = createComment();
+var createPhotosData = function () {
+  var data = [];
+  for (var i = 0; i < COUNT; i = i + 1) {
+    data.push(createPhotoObj(i));
   }
-  return comments;
-};
+  return data;
+}
 
-// Генерируем описание изображения
-var createDescription = function (index) {
-  var image = {};
-  image.url = 'photos/' + (index + 1) + '.jpg';
-  image.description = 'Описание фотографии';
-  image.likes = getRandomRangeNumber(15, 200);
-  image.comments = createCommentList(getRandomNumber(5));
-  return image;
-};
 
-// Генерируем список из описаний
-var createDescription = function (descriptionCount) {
-  var images = [];
-  for (var i = 0; i < descriptionCount; i++) {
-    images[i] = createDescription(i);
-  }
-  return images;
-};
+var sample = createPhotosData();
+console.log(sample);
+
 
 // 1. Объявить функцию генерации случайных данных
 // 2. Объявить функцию создания DOM-элемента на основе JS-объекта
