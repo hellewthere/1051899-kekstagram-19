@@ -65,6 +65,32 @@ var createPhotosData = function () {
 var sample = createPhotosData();
 console.log(sample);
 
+var createPhoto = function (photoCard) {
+  var pictureTemplate = document.querySelector('#picture');
+  var picture = pictureTemplate.content.querySelector('.picture');
+  //var photoElement = picture.cloneNode(true);
+console.log(picture.querySelector('.picture__img'), photoCard);
+  picture.querySelector('.picture__img').src= photoCard.url;
+
+  picture.querySelector('.picture__info');
+  picture.querySelector('.picture__comments');
+  picture.querySelector('.picture__likes');
+
+  return picture;
+};
+
+var renderPhotos = function (photosData) {
+  var pictures = document.querySelector('.pictures');
+  var photoElement = document.querySelector('#picture');
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < photosData.length; i++) {
+    fragment.appendChild(createPhoto(photosData[i]));
+  }
+  pictures.appendChild(fragment);
+};
+
+renderPhotos (sample);
 
 // 1. Объявить функцию генерации случайных данных
 // 2. Объявить функцию создания DOM-элемента на основе JS-объекта
