@@ -60,11 +60,12 @@ var createPhotosData = function () {
   return data;
 };
 
-var sample = createPhotosData();
+var myphotos = createPhotosData();
 
 var createPhoto = function (photoCard) {
   var pictureTemplate = document.querySelector('#picture');
   var picture = pictureTemplate.content.cloneNode(true);
+
   picture.querySelector('.picture__img').src = photoCard.url;
   picture.querySelector('.picture__comments').textContent = photoCard.comments.length;
   picture.querySelector('.picture__likes').textContent = photoCard.likes;
@@ -82,4 +83,4 @@ var renderPhotos = function (photosData) {
   pictures.appendChild(fragment);
 };
 
-renderPhotos(sample);
+renderPhotos(myphotos);
