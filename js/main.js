@@ -65,6 +65,7 @@ var sample = createPhotosData();
 var createPhoto = function (photoCard) {
   var pictureTemplate = document.querySelector('#picture');
   var picture = pictureTemplate.content.cloneNode(true);
+
   picture.querySelector('.picture__img').src = photoCard.url;
   picture.querySelector('.picture__comments').textContent = photoCard.comments.length;
   picture.querySelector('.picture__likes').textContent = photoCard.likes;
@@ -83,3 +84,30 @@ var renderPhotos = function (photosData) {
 };
 
 renderPhotos(sample);
+
+
+var getBigPicture = function () {
+  var bigPicture = document.querySelector('.big-picture').classList.remove('hidden');
+  // window.console.log(bigPicture);
+
+  bigPicture.querySelector('.big-picture__img').src = photoCard.url;
+  bigPicture.querySelector('.likes-count').textContent = photoCard.likes;
+  bigPicture.querySelector('.comments-count').textContent = photoCard.comments.length;
+  // Список комментариев под фотографией: комментарии должны вставляться в блок .social__comments
+  bigPicture.querySelector('.social__comments');
+  bigPicture.querySelector('.social__picture').src = avatar.url.alt = NAMES.length.width = '35'.height = '35';
+  bigPicture.querySelector('.social__text').textContent = MESSAGES.length;
+  // Описание фотографии description вставьте строкой в блок .social__caption
+  bigPicture.querySelector('.social__caption').textContent = DESCRIPTIONS.length;
+
+  // Спрячьте блоки счётчика комментариев .social__comment-count
+  // и загрузки новых комментариев .comments-loader, добавив им класс hidden.
+  bigPicture.querySelector('.social__comment-count').classList.add('hidden');
+  bigPicture.querySelector('.comments-loader').classList.add('hidden');
+
+  // Добавьте на <body> класс modal-open
+  bigPicture.querySelector('body').classList.add('modal-open');
+
+};
+
+getBigPicture();
