@@ -54,13 +54,13 @@ var createPhotoObj = function (index) {
 
 var createPhotosData = function () {
   var data = [];
-  for (var i = 0; i < COUNT; i = i + 1) {
-    data.push(createPhotoObj(i));
+  for (var j = 0; j < COUNT; j = j + 1) {
+    data.push(createPhotoObj(j));
   }
   return data;
 };
 
-var sample = createPhotosData();
+var data = createPhotosData();
 
 var createPhoto = function (photoCard) {
   var pictureTemplate = document.querySelector('#picture');
@@ -83,31 +83,52 @@ var renderPhotos = function (photosData) {
   pictures.appendChild(fragment);
 };
 
-renderPhotos(sample);
+renderPhotos(data);
+
+document.querySelector('body').classList.add('modal-open');
+var bigPicture = document.querySelector('.big-picture');
 
 
-var getBigPicture = function () {
-  var bigPicture = document.querySelector('.big-picture').classList.remove('hidden');
-  // window.console.log(bigPicture);
+var addComments = function (node, comments) {
+  var commentsFragment = document.createDocumentFragment();
+  node.innerHTML = '';
 
-  bigPicture.querySelector('.big-picture__img').src = photoCard.url;
-  bigPicture.querySelector('.likes-count').textContent = photoCard.likes;
-  bigPicture.querySelector('.comments-count').textContent = photoCard.comments.length;
-  // Список комментариев под фотографией: комментарии должны вставляться в блок .social__comments
-  bigPicture.querySelector('.social__comments');
-  bigPicture.querySelector('.social__picture').src = avatar.url.alt = NAMES.length.width = '35'.height = '35';
-  bigPicture.querySelector('.social__text').textContent = MESSAGES.length;
-  // Описание фотографии description вставьте строкой в блок .social__caption
-  bigPicture.querySelector('.social__caption').textContent = DESCRIPTIONS.length;
+  comments.forEach(function (detail) {
+    var newComment = document.createElement('li');
+    var newCommentImg = document.createElement('img');
+    newComment.appendChild(newCommentImg);
+    var newCommentText = document.createElement('p');
+    newComment.appendChild(newCommentText);
 
-  // Спрячьте блоки счётчика комментариев .social__comment-count
-  // и загрузки новых комментариев .comments-loader, добавив им класс hidden.
+    newComment.classList.add('social__comment');
+    newCommentImg.classList.add('social__picture');
+    newCommentImg.src = detail.avatar;
+    newCommentImg.alt = detail.name;
+    newCommentText.textContent = detail.message;
+
+    commentsFragment.appendChild(newComment);
+  });
+
+  node.appendChild(commentsFragment);
+};
+
+
+var getBigPicture = function (pictureData) {
+  bigPicture.classList.remove('hidden');
+
+  bigPicture.querySelector('.big-picture__img img').src = pictureData.url;
+  bigPicture.querySelector('.likes-count').textContent = pictureData.likes;
+  bigPicture.querySelector('.comments-count').textContent = pictureData.comments.length;
+  bigPicture.querySelector('.social__caption').textContent = pictureData.description;
+
+  addComments(bigPicture.querySelector('.social__comments'), pictureData.comments);
   bigPicture.querySelector('.social__comment-count').classList.add('hidden');
   bigPicture.querySelector('.comments-loader').classList.add('hidden');
 
-  // Добавьте на <body> класс modal-open
-  bigPicture.querySelector('body').classList.add('modal-open');
+  bigPicture.querySelector('.social__picture').src = pictureData.url.alt = NAMES.length.offsetWidth(35).offsetHeight(35);
+  bigPicture.querySelector('.social__picture').src = pictureData.url.alt = NAMES.length.offsetWidth(35).offsetHeight(35);
 
+  // window.console.log(pictureData, bigPicture.querySelector('.comments-count'));
 };
 
-getBigPicture();
+getBigPicture(data[0]);
