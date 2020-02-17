@@ -85,11 +85,8 @@ var renderPhotos = function (photosData) {
 
 renderPhotos(data);
 
-document.querySelector('body').classList.add('modal-open');
-var bigPicture = document.querySelector('.big-picture');
 
-
-var addComments = function (node, comments) {
+/* var addComments = function (node, comments) {
   var commentsFragment = document.createDocumentFragment();
   node.innerHTML = '';
 
@@ -111,8 +108,41 @@ var addComments = function (node, comments) {
 
   node.appendChild(commentsFragment);
 };
+*/
 
 
+// добавляет класс по пункту 3 и обращается к главному объекту по классу
+document.querySelector('body').classList.add('modal-open');
+var bigPicture = document.querySelector('.big-picture');
+
+// дубль ноды + обращается к свойствам комментария
+var createCommentItem = function () {
+  var commentItemTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
+  var commentItem = commentItemTemplate.cloneNode(true);
+  commentItem.querySelector('.social__picture').src = '';
+  commentItem.querySelector('.social__picture').alt = '';
+  commentItem.querySelector('.social__text').textContent = '';
+
+  return commentItem;
+};
+
+var commentItem = createCommentItem();
+
+
+var renderComments = function (photoComments) {
+  // меняет содержимое дубля элемента
+  commentItem.innerHTML = '';
+  // контейнер для нод вне дом-дерева
+  var fragment = document.createDocumentFragment();
+  // метод выполняет функцию 1раз для каждого элемента массива
+  photoComments.comments.forEach(function () {
+  // createCommentItem() вставляет новый элемент ДОМ в конец fragment
+    fragment.appendChild(createCommentItem());
+  });
+  return commentItem.appendChild(fragment);
+};
+
+// заполняет информацией главный объект
 var getBigPicture = function (pictureData) {
   bigPicture.classList.remove('hidden');
 
@@ -120,15 +150,17 @@ var getBigPicture = function (pictureData) {
   bigPicture.querySelector('.likes-count').textContent = pictureData.likes;
   bigPicture.querySelector('.comments-count').textContent = pictureData.comments.length;
   bigPicture.querySelector('.social__caption').textContent = pictureData.description;
-
-  addComments(bigPicture.querySelector('.social__comments'), pictureData.comments);
-  bigPicture.querySelector('.social__comment-count').classList.add('hidden');
-  bigPicture.querySelector('.comments-loader').classList.add('hidden');
-
-  bigPicture.querySelector('.social__picture').src = pictureData.url.alt = NAMES.length.offsetWidth(35).offsetHeight(35);
-  bigPicture.querySelector('.social__picture').src = pictureData.url.alt = NAMES.length.offsetWidth(35).offsetHeight(35);
-
-  // window.console.log(pictureData, bigPicture.querySelector('.comments-count'));
+  renderComments(pictureData);
 };
 
 getBigPicture(data[0]);
+
+// прячет элементы по пункту 2
+var hideElements = function () {
+  bigPicture.querySelector('.social__comment-count').classList.add('hidden');
+  bigPicture.querySelector('.comments-loader').classList.add('hidden');
+};
+
+hideElements();
+
+
