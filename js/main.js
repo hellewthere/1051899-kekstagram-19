@@ -83,63 +83,29 @@ var renderPhotos = function (photosData) {
   pictures.appendChild(fragment);
 };
 
-renderPhotos(data);
-
-
-/* var addComments = function (node, comments) {
-  var commentsFragment = document.createDocumentFragment();
-  node.innerHTML = '';
-
-  comments.forEach(function (detail) {
-    var newComment = document.createElement('li');
-    var newCommentImg = document.createElement('img');
-    newComment.appendChild(newCommentImg);
-    var newCommentText = document.createElement('p');
-    newComment.appendChild(newCommentText);
-
-    newComment.classList.add('social__comment');
-    newCommentImg.classList.add('social__picture');
-    newCommentImg.src = detail.avatar;
-    newCommentImg.alt = detail.name;
-    newCommentText.textContent = detail.message;
-
-    commentsFragment.appendChild(newComment);
-  });
-
-  node.appendChild(commentsFragment);
-};
-*/
-
-
 // добавляет класс по пункту 3 и обращается к главному объекту по классу
 document.querySelector('body').classList.add('modal-open');
 var bigPicture = document.querySelector('.big-picture');
 
-// дубль ноды + обращается к свойствам комментария
-var createCommentItem = function () {
+// createCommentItem будет принимать объект с данными коммента, и заполнять шаблон
+var createCommentItem = function (commentObj) {
   var commentItemTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
   var commentItem = commentItemTemplate.cloneNode(true);
-  commentItem.querySelector('.social__picture').src = '';
-  commentItem.querySelector('.social__picture').alt = '';
-  commentItem.querySelector('.social__text').textContent = '';
-
+  commentItem.querySelector('.social__picture').src = commentObj.avatar;
+  commentItem.querySelector('.social__picture').alt = commentObj.message;
+  commentItem.querySelector('.social__text').textContent = commentObj.name;
   return commentItem;
 };
 
-var commentItem = createCommentItem();
-
-
-var renderComments = function (photoComments) {
-  // меняет содержимое дубля элемента
-  commentItem.innerHTML = '';
+var createComments = function (photoComments) {
   // контейнер для нод вне дом-дерева
   var fragment = document.createDocumentFragment();
   // метод выполняет функцию 1раз для каждого элемента массива
-  photoComments.comments.forEach(function () {
+  photoComments.comments.forEach(function (commentObj) {
   // createCommentItem() вставляет новый элемент ДОМ в конец fragment
-    fragment.appendChild(createCommentItem());
+    fragment.appendChild(createCommentItem(commentObj));
   });
-  return commentItem.appendChild(fragment);
+  return fragment;
 };
 
 // заполняет информацией главный объект
@@ -150,10 +116,8 @@ var getBigPicture = function (pictureData) {
   bigPicture.querySelector('.likes-count').textContent = pictureData.likes;
   bigPicture.querySelector('.comments-count').textContent = pictureData.comments.length;
   bigPicture.querySelector('.social__caption').textContent = pictureData.description;
-  renderComments(pictureData);
+  bigPicture.querySelector('.social__comments').appendChild(createComments(pictureData));
 };
-
-getBigPicture(data[0]);
 
 // прячет элементы по пункту 2
 var hideElements = function () {
@@ -161,6 +125,8 @@ var hideElements = function () {
   bigPicture.querySelector('.comments-loader').classList.add('hidden');
 };
 
+renderPhotos(data);
+getBigPicture(data[0]);
 hideElements();
 
 
