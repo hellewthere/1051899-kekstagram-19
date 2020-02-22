@@ -54,17 +54,18 @@ var createPhotoObj = function (index) {
 
 var createPhotosData = function () {
   var data = [];
-  for (var i = 0; i < COUNT; i = i + 1) {
-    data.push(createPhotoObj(i));
+  for (var j = 0; j < COUNT; j = j + 1) {
+    data.push(createPhotoObj(j));
   }
   return data;
 };
 
-var sample = createPhotosData();
+var data = createPhotosData();
 
 var createPhoto = function (photoCard) {
   var pictureTemplate = document.querySelector('#picture');
   var picture = pictureTemplate.content.cloneNode(true);
+
   picture.querySelector('.picture__img').src = photoCard.url;
   picture.querySelector('.picture__comments').textContent = photoCard.comments.length;
   picture.querySelector('.picture__likes').textContent = photoCard.likes;
@@ -82,4 +83,50 @@ var renderPhotos = function (photosData) {
   pictures.appendChild(fragment);
 };
 
-renderPhotos(sample);
+// добавляет класс по пункту 3 и обращается к главному объекту по классу
+document.querySelector('body').classList.add('modal-open');
+var bigPicture = document.querySelector('.big-picture');
+
+// createCommentItem будет принимать объект с данными коммента, и заполнять шаблон
+var createCommentItem = function (commentObj) {
+  var commentItemTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
+  var commentItem = commentItemTemplate.cloneNode(true);
+  commentItem.querySelector('.social__picture').src = commentObj.avatar;
+  commentItem.querySelector('.social__picture').alt = commentObj.message;
+  commentItem.querySelector('.social__text').textContent = commentObj.name;
+  return commentItem;
+};
+
+var createComments = function (photoComments) {
+  // контейнер для нод вне дом-дерева
+  var fragment = document.createDocumentFragment();
+  // метод выполняет функцию 1раз для каждого элемента массива
+  photoComments.comments.forEach(function (commentObj) {
+  // createCommentItem() вставляет новый элемент ДОМ в конец fragment
+    fragment.appendChild(createCommentItem(commentObj));
+  });
+  return fragment;
+};
+
+// заполняет информацией главный объект
+var getBigPicture = function (pictureData) {
+  bigPicture.classList.remove('hidden');
+
+  bigPicture.querySelector('.big-picture__img img').src = pictureData.url;
+  bigPicture.querySelector('.likes-count').textContent = pictureData.likes;
+  bigPicture.querySelector('.comments-count').textContent = pictureData.comments.length;
+  bigPicture.querySelector('.social__caption').textContent = pictureData.description;
+  bigPicture.querySelector('.social__comments').appendChild(createComments(pictureData));
+};
+
+// прячет элементы по пункту 2
+var hideElements = function () {
+  bigPicture.querySelector('.social__comment-count').classList.add('hidden');
+  bigPicture.querySelector('.comments-loader').classList.add('hidden');
+};
+
+renderPhotos(data);
+getBigPicture(data[0]);
+hideElements();
+
+
