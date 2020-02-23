@@ -26,6 +26,9 @@ var DESCRIPTIONS = [
   'Бог такого ужаса не допустит!'
 ];
 
+var ESC_KEY = 'Escape';
+var ENTER_KEY = 'Enter';
+
 var getRandomNumber = function (minNumber, maxNumber) {
   var randomNum = Math.floor(Math.random() * maxNumber);
   return randomNum > minNumber ? randomNum : minNumber;
@@ -83,9 +86,9 @@ var renderPhotos = function (photosData) {
   pictures.appendChild(fragment);
 };
 
-// добавляет класс по пункту 3 и обращается к главному объекту по классу
-document.querySelector('body').classList.add('modal-open');
-var bigPicture = document.querySelector('.big-picture');
+// // добавляет класс по пункту 3 и обращается к главному объекту по классу
+// document.querySelector('body').classList.add('modal-open');
+// var bigPicture = document.querySelector('.big-picture');
 
 // createCommentItem будет принимать объект с данными коммента, и заполнять шаблон
 var createCommentItem = function (commentObj) {
@@ -128,5 +131,3 @@ var hideElements = function () {
 renderPhotos(data);
 getBigPicture(data[0]);
 hideElements();
-
-
