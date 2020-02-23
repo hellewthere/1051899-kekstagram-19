@@ -29,6 +29,7 @@ var onPopupEscPress = function (evt) {
 
 // открывает попап
 var openPopup = function () {
+  document.querySelector('body').classList.add('modal-open');
   uploadOverlay.classList.remove('hidden');
   // + обработчики
   closeBtn.addEventListener('click', closePopup);
