@@ -84,7 +84,6 @@ var renderPhotos = function (photosData) {
 };
 
 // добавляет класс по пункту 3 и обращается к главному объекту по классу
-document.querySelector('body').classList.add('modal-open');
 var bigPicture = document.querySelector('.big-picture');
 
 // createCommentItem будет принимать объект с данными коммента, и заполнять шаблон

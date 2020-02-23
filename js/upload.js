@@ -38,12 +38,11 @@ var openPopup = function () {
 
 // закрывает попап
 var closePopup = function () {
+  document.querySelector('body').classList.remove('modal-open');
   uploadOverlay.classList.add('hidden');
   // - обработчики
   closeBtn.removeEventListener('click', openPopup);
   document.removeEventListener('keydown', onPopupEscPress);
 };
 
-uploadBtn.addEventListener('change', function () {
-  openPopup();
-});
+uploadBtn.addEventListener('change', openPopup);
