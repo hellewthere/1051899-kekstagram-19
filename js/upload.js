@@ -46,3 +46,18 @@ var closePopup = function () {
 };
 
 uploadBtn.addEventListener('change', openPopup);
+
+// #####
+document.querySelector('.img-upload__overlay').classList.remove('hidden');
+var effectsList = document.querySelector('.effects__list');
+// window.console.log(effectsList);
+
+// effectsList.addEventListener('change', function (evt) {
+//   window.console.log(evt.target);
+// });
+console.log(effectsList);
+effectsList.addEventListener('click', onFiltersListClick);
+
+var onFiltersListClick = function () {
+  console.log(1);
+};

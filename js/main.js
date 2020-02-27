@@ -125,5 +125,5 @@ var hideElements = function () {
 };
 
 renderPhotos(data);
-getBigPicture(data[0]);
+// getBigPicture(data[0]);
 hideElements();
