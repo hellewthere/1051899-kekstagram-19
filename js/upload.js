@@ -47,17 +47,75 @@ var closePopup = function () {
 
 uploadBtn.addEventListener('change', openPopup);
 
-// #####
+// Наложение эффекта на изображение
+
+var filter = {
+  none: {
+    className: 'effects__preview--none',
+  },
+  chrome: {
+    className: 'effects__preview--chrome',
+  },
+  sepia: {
+    className: 'effects__preview--sepia',
+  },
+  marvin: {
+    className: 'effects__preview--marvin',
+  },
+  phobos: {
+    className: 'effects__preview--phobos',
+  },
+  heat: {
+    className: 'effects__preview--heat',
+  }
+};
+
+// НЕ ЗАБЫТЬ УДАЛИТЬ СТРОЧКУ НИЖЕ
 document.querySelector('.img-upload__overlay').classList.remove('hidden');
 var effectsList = document.querySelector('.effects__list');
-// window.console.log(effectsList);
-
-// effectsList.addEventListener('change', function (evt) {
-//   window.console.log(evt.target);
-// });
-console.log(effectsList);
-effectsList.addEventListener('click', onFiltersListClick);
-
-var onFiltersListClick = function () {
-  console.log(1);
+var fullsizePhoto = document.querySelector('.img-upload__preview');
+var effectSlider = document.querySelector('.effect-level');
+var effectLevelPin = document.querySelector('.effect-level__pin');
+var onPinMouseup = function () {
 };
+
+var onFiltersListClick = function (evt) {
+  fullsizePhoto.className = 'img-upload__preview ' + filter[evt.target.value].className;
+  effectSlider.classList.add('hidden');
+  if (evt.target.value !== 'none') {
+    effectSlider.classList.remove('hidden');
+  }
+};
+effectsList.addEventListener('change', onFiltersListClick);
+effectLevelPin.addEventListener('mouseup', onPinMouseup);
+
+// Изменение масштаба изображения
+
+var scale = document.querySelector('.scale');
+var scaleControlInput = document.querySelector('.scale__control--value');
+var scaleControlValue = parseInt(scaleControlInput.value, 10);
+
+var scaleParam = {
+  MAX: 100,
+  MIN: 25,
+  STEP: 25,
+  MEASURE: '%',
+};
+
+var setPhotoSize = function (value) {
+  scaleControlInput.value = value + scaleParam.MEASURE;
+  fullsizePhoto.style.transform = 'scale(' + value / 100 + ')';
+};
+
+var onScaleButtonClick = function (evt) {
+  if (evt.target.classList.contains('scale__control--bigger') && scaleControlValue < scaleParam.MAX) {
+    scaleControlValue = scaleControlValue + scaleParam.STEP;
+  }
+  if (evt.target.classList.contains('scale__control--smaller') && scaleControlValue > scaleParam.MIN) {
+    scaleControlValue = scaleControlValue - scaleParam.STEP;
+  }
+  setPhotoSize(scaleControlValue);
+};
+
+scale.addEventListener('click', onScaleButtonClick);
+
