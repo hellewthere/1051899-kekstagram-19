@@ -48,7 +48,6 @@ var closePopup = function () {
 uploadBtn.addEventListener('change', openPopup);
 
 // Наложение эффекта на изображение
-
 var filter = {
   none: {
     className: 'effects__preview--none',
@@ -71,7 +70,7 @@ var filter = {
 };
 
 // НЕ ЗАБЫТЬ УДАЛИТЬ СТРОЧКУ НИЖЕ
-document.querySelector('.img-upload__overlay').classList.remove('hidden');
+// document.querySelector('.img-upload__overlay').classList.remove('hidden');
 var effectsList = document.querySelector('.effects__list');
 var fullsizePhoto = document.querySelector('.img-upload__preview');
 var effectSlider = document.querySelector('.effect-level');
@@ -119,3 +118,62 @@ var onScaleButtonClick = function (evt) {
 
 scale.addEventListener('click', onScaleButtonClick);
 
+// Валидация
+var uploadForm = document.querySelector('.img-upload__form');
+var inputHashtags = document.querySelector('.text__hashtags');
+var textDescription = document.querySelector('.text__description');
+
+var HASHTAG_MAX_COUNT = 5;
+var HASHTAG_MAX_LENGTH = 20;
+var HASHTAG_MIN_LENGTH = 2;
+// var hashtagArr = [];
+// var HASHTAG_SEPARATOR = ' ';
+
+// console.log(uploadForm);
+
+var checkHashtagSymbol = function () {
+  var hashtagsArr = inputHashtags.value.split(' ').filter(function (item) {
+    return item !== '';
+  });
+  console.log(hashtagsArr);
+
+  var isHashtagsLessThanFive = hashtagsArr.length <= 5;
+  console.log(isHashtagsLessThanFive, 'Хештегов меньше 5');
+
+  var isHashtagCorrect = hashtagsArr.every(function (item) {
+    return /^#[a-zA-Z]{1,20}$/.test(item);
+  });
+  console.log(isHashtagCorrect, 'Хештег имеет валидный формат');
+
+  var isHastagsNoDuplicates = hashtagsArr.every(function (item, index, array) {
+    return array.indexOf(item) === index;
+  });
+  console.log(isHastagsNoDuplicates, 'Нет дублирования одинаковых хештегов');
+
+  return isHashtagCorrect && isHastagsNoDuplicates && isHashtagsLessThanFive;
+};
+
+
+var onUploadFormSubmit = function (evt) {
+  evt.preventDefault();
+
+  var isFormValid = checkHashtagSymbol();
+
+  if (isFormValid) {
+    // var formData = new FormData(form);
+  } else {
+    console.log('Форма невалидна');
+  }
+};
+
+var onInputHashtagsBlur = function () {
+  // console.log(1);
+  if (checkHashtagSymbol()) {
+    inputHashtags.style.border = '';
+  } else {
+    inputHashtags.style.border = '2px solid red';
+  }
+};
+
+uploadForm.addEventListener('submit', onUploadFormSubmit);
+inputHashtags.addEventListener('blur', onInputHashtagsBlur);
