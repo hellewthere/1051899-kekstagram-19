@@ -9,6 +9,10 @@ var uploadOverlay = document.querySelector('.img-upload__overlay');
 var uploadBtn = document.querySelector('#upload-file');
 // кнопка для закрытия формы
 var closeBtn = document.querySelector('#upload-cancel');
+var uploadForm = document.querySelector('.img-upload__form');
+var inputHashtags = document.querySelector('.text__hashtags');
+var textDescription = document.querySelector('.text__description');
+
 
 var keyboard = {
   isEscEvent: function (evt, callback) {
@@ -46,6 +50,38 @@ var closePopup = function () {
 };
 
 uploadBtn.addEventListener('change', openPopup);
+
+// Если фокус находится в области ввода хэштега/комментария - окно закрываться не должно.
+inputHashtags.addEventListener('focus', function () {
+  document.removeEventListener('keydown', onPopupEscPress);
+});
+
+textDescription.addEventListener('focus', function () {
+  document.removeEventListener('keydown', onPopupEscPress);
+});
+
+inputHashtags.addEventListener('blur', function () {
+  document.addEventListener('keydown', onPopupEscPress);
+});
+
+textDescription.addEventListener('blur', function () {
+  document.addEventListener('keydown', onPopupEscPress);
+});
+
+inputHashtags.addEventListener('keydown', function (evt) {
+  keyboard.isEnterEvent(evt, openPopup);
+});
+
+textDescription.addEventListener('keydown', function (evt) {
+  keyboard.isEnterEvent(evt, openPopup);
+});
+
+// Если окно открыто и фокус находится на кнопке закрытия окна,
+// то нажатие клавиши ENTER должно приводить к закрытию диалога
+closeBtn.addEventListener('keydown', function (evt) {
+  keyboard.isEscEvent(evt, closePopup);
+});
+
 
 // Наложение эффекта на изображение
 var filter = {
@@ -119,13 +155,10 @@ var onScaleButtonClick = function (evt) {
 scale.addEventListener('click', onScaleButtonClick);
 
 // Валидация
-var uploadForm = document.querySelector('.img-upload__form');
-var inputHashtags = document.querySelector('.text__hashtags');
-var textDescription = document.querySelector('.text__description');
 
-var HASHTAG_MAX_COUNT = 5;
-var HASHTAG_MAX_LENGTH = 20;
-var HASHTAG_MIN_LENGTH = 2;
+// var HASHTAG_MAX_COUNT = 5;
+// var HASHTAG_MAX_LENGTH = 20;
+// var HASHTAG_MIN_LENGTH = 2;
 // var hashtagArr = [];
 // var HASHTAG_SEPARATOR = ' ';
 
@@ -177,3 +210,4 @@ var onInputHashtagsBlur = function () {
 
 uploadForm.addEventListener('submit', onUploadFormSubmit);
 inputHashtags.addEventListener('blur', onInputHashtagsBlur);
+
