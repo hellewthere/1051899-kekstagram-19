@@ -1,5 +1,8 @@
 'use strict';
 
+var ESC_KEY = 'Escape';
+var ENTER_KEY = 'Enter';
+
 var COUNT = 25;
 var MESSAGES = [
   'Всё отлично!',
@@ -23,7 +26,7 @@ var DESCRIPTIONS = [
   'Вряд ли где можно было найти человека, который так жил бы в своей должности',
   'Я ничего на свете так не страшусь и не избегаю, как палящих лучей солнца',
   'Коль торговать, не всё равно ли, свинцом иль сыром торговать?',
-  'Бог такого ужаса не допустит!'
+  'Вы напрасно, господа, ходите без калош. Во-первых, вы простудитесь, а во-вторых, вы наследите мне на коврах. А все ковры у меня персидские.'
 ];
 
 var getRandomNumber = function (minNumber, maxNumber) {
@@ -33,6 +36,7 @@ var getRandomNumber = function (minNumber, maxNumber) {
 
 var createPhotoObj = function (index) {
   var photoCard = {
+    id: index + 1,
     url: 'photos/' + (index + 1) + '.jpg',
     description: DESCRIPTIONS[getRandomNumber(0, DESCRIPTIONS.length)],
     likes: getRandomNumber(15, 200),
@@ -61,11 +65,13 @@ var createPhotosData = function () {
 };
 
 var data = createPhotosData();
+console.log(data);
 
 var createPhoto = function (photoCard) {
   var pictureTemplate = document.querySelector('#picture');
   var picture = pictureTemplate.content.cloneNode(true);
 
+  picture.querySelector('.picture').setAttribute('id', photoCard.id);
   picture.querySelector('.picture__img').src = photoCard.url;
   picture.querySelector('.picture__comments').textContent = photoCard.comments.length;
   picture.querySelector('.picture__likes').textContent = photoCard.likes;
@@ -124,6 +130,47 @@ var hideElements = function () {
   bigPicture.querySelector('.comments-loader').classList.add('hidden');
 };
 
+var keyboard = {
+  isEscEvent: function (evt, callback) {
+    if (evt.key === ESC_KEY) {
+      callback();
+    }
+  },
+  isEnterEvent: function (evt, callback) {
+    if (evt.key === ENTER_KEY) {
+      callback();
+    }
+  }
+};
+
+var closeBigPictureBtn = document.querySelector('#picture-cancel');
+var picturesContainer = document.querySelector('.pictures');
+
+var closeBigPicturePopup = function () {
+  bigPicture.classList.add('hidden');
+  closeBigPictureBtn.removeEventListener('click', closeBigPicturePopup);
+  document.removeEventListener('keydown', onCloseBigPictureBtnKeydown);
+};
+
+var onCloseBigPictureBtnKeydown = function (evt) {
+  keyboard.isEscEvent(evt, closeBigPicturePopup);
+};
+
+var renderBigPicture = function (pictureId) {
+  var pictureData = data.find(function (item) {
+    return item.id === +pictureId;
+  });
+  getBigPicture(pictureData);
+  closeBigPictureBtn.addEventListener('click', closeBigPicturePopup);
+  document.addEventListener('keydown', onCloseBigPictureBtnKeydown);
+};
+
+var onPicturesContainerClick = function (evt) {
+  var clickedPicture = evt.target.closest('.picture');
+  renderBigPicture(clickedPicture.id);
+};
+
+picturesContainer.addEventListener('click', onPicturesContainerClick);
+
 renderPhotos(data);
-// getBigPicture(data[0]);
 hideElements();
