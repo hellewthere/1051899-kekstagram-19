@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var photos = window.data.createPhotos();
+  var data = window.data.createPhotos();
 
   var createPhoto = function (photoCard) {
     var pictureTemplate = document.querySelector('#picture');
@@ -25,5 +25,5 @@
     pictures.appendChild(fragment);
   };
 
-  renderPhotos(photos);
+  renderPhotos(data);
 })();
