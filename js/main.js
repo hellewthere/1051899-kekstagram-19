@@ -124,7 +124,7 @@ var getBigPicture = function (pictureData) {
   bigPicture.querySelector('.social__comments').appendChild(createComments(pictureData));
 };
 
-// прячет элементы по пункту 2
+// прячет элементы по пункту 2.
 var hideElements = function () {
   bigPicture.querySelector('.social__comment-count').classList.add('hidden');
   bigPicture.querySelector('.comments-loader').classList.add('hidden');
