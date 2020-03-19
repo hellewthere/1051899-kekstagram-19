@@ -13,6 +13,8 @@
   // форма редактирования изображения
   var inputHashtags = document.querySelector('.text__hashtags');
   var textDescription = document.querySelector('.text__description');
+  var effectsSlider = document.querySelector('.effect-level');
+
 
   var onPopupEscPress = function (evt) {
     keyboard.isEscEvent(evt, closePopup);
@@ -21,6 +23,7 @@
   // открывает попап
   var openPopup = function () {
     document.querySelector('body').classList.add('modal-open');
+    effectsSlider.classList.add('hidden');
     uploadOverlay.classList.remove('hidden');
     // + обработчики
     closeBtn.addEventListener('click', closePopup);
