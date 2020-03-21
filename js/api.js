@@ -71,4 +71,3 @@
   api.loadData = load;
   window.api = api;
 })();
-
