@@ -1,39 +1,38 @@
 'use strict';
+
 (function () {
-
-  var slider = {};
   var rangeSlider = document.querySelector('.effect-level');
-  var rangeLine = rangeSlider.querySelector('.effect-level__depth');
-  var filterLine = rangeSlider.querySelector('.effect-level__line');
   var pin = rangeSlider.querySelector('.effect-level__pin');
+  var barInput = rangeSlider.querySelector('.effect-level__value');
+  var barDepth = rangeSlider.querySelector('.effect-level__depth');
+  var slider = {};
 
-  var initSlider = function (callBack) {
+  var initializeSlider = function (callBack) {
     pin.addEventListener('mousedown', function (evt) {
       if (typeof callBack === 'function') {
-        onPinMouseDown(evt, callBack);
+        onPinMousedown(evt, callBack);
       }
     });
   };
 
   var resetSliderValues = function () {
-    rangeLine.style.width = 100 + '%';
-    filterLine.value = 100;
     pin.style.left = 100 + '%';
+    barDepth.style.width = 100 + '%';
+    barInput.value = 100;
   };
 
   var updateSliderValues = function (ratio) {
     pin.style.left = (ratio * 100) + '%';
-    rangeLine.style.width = (ratio * 100) + '%';
-    filterLine.value = Math.round(ratio * 100);
+    barDepth.style.width = (ratio * 100) + '%';
+    barInput.value = Math.round(ratio * 100);
   };
 
-  var onPinMouseDown = function (evt, callback) {
+  var onPinMousedown = function (evt, action) {
     var ratio = null;
     var currentPointX = evt.clientX;
     var parentWidth = evt.target.parentNode.offsetWidth;
 
-    var onPinMouseMove = function (moveEvent) {
-
+    var onMouseMove = function (moveEvent) {
       var pressedX = currentPointX - moveEvent.clientX;
       var passedX = evt.target.offsetLeft - pressedX;
 
@@ -49,18 +48,19 @@
       ratio = passedX / parentWidth;
 
       updateSliderValues(ratio);
-      callback(ratio);
+      action(ratio);
     };
 
-    var onPinMouseUp = function () {
-      document.removeEventListener('mousemove', onPinMouseMove);
-      document.removeEventListener('mouseup', onPinMouseUp);
+    var onMouseUp = function () {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
     };
-    document.addEventListener('mouseup', onPinMouseUp);
-    document.addEventListener('mousemove', onPinMouseMove);
+
+    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', onMouseMove);
   };
 
   slider.resetValues = resetSliderValues;
-  slider.init = initSlider;
+  slider.initialize = initializeSlider;
   window.slider = slider;
 })();

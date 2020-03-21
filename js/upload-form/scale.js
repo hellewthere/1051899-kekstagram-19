@@ -7,11 +7,18 @@
   var fullsizePhoto = document.querySelector('.img-upload__preview');
   var scaleControlValue = parseInt(scaleControlInput.value, 10);
 
+  var photoSize = {};
+
   var scaleParam = {
     MAX: 100,
     MIN: 25,
     STEP: 25,
     MEASURE: '%',
+  };
+
+  var resetPhotoSize = function () {
+    scaleControlInput.value = scaleParam.MAX + scaleParam.MEASURE;
+    fullsizePhoto.style.transform = '';
   };
 
   var setPhotoSize = function (value) {
@@ -30,4 +37,7 @@
   };
 
   scale.addEventListener('click', onScaleButtonClick);
+
+  photoSize.resetValues = resetPhotoSize;
+  window.photoSize = photoSize;
 })();
