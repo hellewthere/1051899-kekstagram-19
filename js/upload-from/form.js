@@ -14,7 +14,6 @@
   var userMessage = window.userMessage;
   var photoSize = window.photoSize;
   var effects = window.effects;
-  var validation = window.validation;
   var keyboard = window.utils.keyboard;
 
   var resetFormValues = function () {
@@ -90,13 +89,8 @@
 
   var onFormSubmit = function (evt) {
     evt.preventDefault();
-
-    var isFormValid = validation.checkForm();
-
-    if (isFormValid) {
-      var formData = new FormData(form);
-      window.api.uploadData(formData, onUpload, onError);
-    }
+    var formData = new FormData(form);
+    window.api.uploadData(formData, onUpload, onError);
   };
 
   form.addEventListener('submit', onFormSubmit);

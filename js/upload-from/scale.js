@@ -1,7 +1,7 @@
 'use strict';
-// Изменение масштаба изображения
 
 (function () {
+  // Изменение масштаба изображения
   var scale = document.querySelector('.scale');
   var scaleControlInput = document.querySelector('.scale__control--value');
   var fullsizePhoto = document.querySelector('.img-upload__preview');

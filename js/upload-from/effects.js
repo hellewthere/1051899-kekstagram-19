@@ -1,5 +1,4 @@
 'use strict';
-// Наложение эффекта на изображение
 
 (function () {
   var effectsList = document.querySelector('.effects__list');
