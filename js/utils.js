@@ -1,10 +1,27 @@
 'use strict';
 
 (function () {
-  var utils = {};
-
   var ESC_KEY = 'Escape';
   var ENTER_KEY = 'Enter';
+  var utils = {};
+
+  var debounce = function (callBack, intervalal) {
+    var lastTimeout = null;
+    return function () {
+      var parameters = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        callBack.apply(null, parameters);
+      }, intervalal);
+    };
+  };
+
+  var getRandomNumber = function (minNumber, maxNumber) {
+    var randomNum = Math.floor(Math.random() * maxNumber);
+    return randomNum > minNumber ? randomNum : minNumber;
+  };
 
   var keyboard = {
     isEscEvent: function (evt, callback) {
@@ -19,13 +36,8 @@
     }
   };
 
-  var getRandomNumber = function (minNumber, maxNumber) {
-    var randomNum = Math.floor(Math.random() * maxNumber);
-    return randomNum > minNumber ? randomNum : minNumber;
-  };
-
-  utils.keyboard = keyboard;
   utils.getRandomNumber = getRandomNumber;
-  // console.log(utils);
+  utils.keyboard = keyboard;
+  utils.debounce = debounce;
   window.utils = utils;
 })();
