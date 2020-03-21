@@ -1,7 +1,16 @@
 'use strict';
 
 (function () {
-  var data = window.data.createPhotos();
+  var gallery = {};
+
+  var pictures = document.querySelector('.pictures');
+
+  var dropPhotos = function () {
+    var photos = document.querySelectorAll('.picture');
+    photos.forEach(function (item) {
+      pictures.removeChild(item);
+    });
+  };
 
   var createPhoto = function (photoCard) {
     var pictureTemplate = document.querySelector('#picture');
@@ -16,7 +25,6 @@
   };
 
   var renderPhotos = function (photosData) {
-    var pictures = document.querySelector('.pictures');
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < photosData.length; i++) {
@@ -25,5 +33,7 @@
     pictures.appendChild(fragment);
   };
 
-  renderPhotos(data);
+  gallery.renderPhotos = renderPhotos;
+  gallery.dropPhotos = dropPhotos;
+  window.gallery = gallery;
 })();
