@@ -2,15 +2,7 @@
 
 (function () {
   var gallery = {};
-
   var pictures = document.querySelector('.pictures');
-
-  var dropPhotos = function () {
-    var photos = document.querySelectorAll('.picture');
-    photos.forEach(function (item) {
-      pictures.removeChild(item);
-    });
-  };
 
   var createPhoto = function (photoCard) {
     var pictureTemplate = document.querySelector('#picture');
@@ -24,9 +16,15 @@
     return picture;
   };
 
+  var dropPhotos = function () {
+    var photos = document.querySelectorAll('.picture');
+    photos.forEach(function (item) {
+      pictures.removeChild(item);
+    });
+  };
+
   var renderPhotos = function (photosData) {
     var fragment = document.createDocumentFragment();
-
     for (var i = 0; i < photosData.length; i++) {
       fragment.appendChild(createPhoto(photosData[i]));
     }

@@ -2,16 +2,18 @@
 // Наложение эффекта на изображение
 
 (function () {
-  var effects = {};
-  var slider = window.slider;
-  var currentEffect = null;
   var effectsList = document.querySelector('.effects__list');
   var fullsizePhoto = document.querySelector('.img-upload__preview');
   var effectSlider = document.querySelector('.effect-level');
 
+  var effects = {};
+  var slider = window.slider;
+
+  var currentEffect = null;
+  // Наложение эффекта на изображение
   var effect = {
     none: {
-      className: 'effects__preview--none'
+      className: 'effects__preview--none',
     },
     chrome: {
       type: 'grayscale',
@@ -48,9 +50,10 @@
   var onEffectsListClick = function (evt) {
     slider.resetValues();
     currentEffect = effect[evt.target.value];
-    fullsizePhoto.style.filter = '';
     fullsizePhoto.className = 'img-upload__preview ' + currentEffect.className;
+    fullsizePhoto.style.filter = '';
     effectSlider.classList.add('hidden');
+
     if (evt.target.value !== 'none') {
       effectSlider.classList.remove('hidden');
     }
@@ -68,7 +71,7 @@
     }
   };
 
-  slider.init(setEffect);
+  slider.initialize(setEffect);
   effectsList.addEventListener('change', onEffectsListClick);
 
   effects.resetValues = resetEffect;

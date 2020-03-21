@@ -1,20 +1,29 @@
 'use strict';
 
 (function () {
-  var checkForm = window.validation.checkForm;
-  var keyboard = window.utils.keyboard;
-
   var uploadOverlay = document.querySelector('.img-upload__overlay');
-  // поле выбора изображения, открывает попап загрузки
+  var effectSlider = document.querySelector('.effect-level');
   var uploadBtn = document.querySelector('#upload-file');
-  // кнопка для закрытия формы
   var closeBtn = document.querySelector('#upload-cancel');
-  var uploadForm = document.querySelector('.img-upload__form');
-  // форма редактирования изображения
+  var form = document.querySelector('.img-upload__form');
+  var uploadFileInput = form.querySelector('.img-upload__input');
   var inputHashtags = document.querySelector('.text__hashtags');
   var textDescription = document.querySelector('.text__description');
-  var effectsSlider = document.querySelector('.effect-level');
 
+  // импорт сторонних модулей
+  var userMessage = window.userMessage;
+  var photoSize = window.photoSize;
+  var effects = window.effects;
+  var validation = window.validation;
+  var keyboard = window.utils.keyboard;
+
+  var resetFormValues = function () {
+    photoSize.resetValues();
+    effects.resetValues();
+    inputHashtags.value = '';
+    textDescription.value = '';
+    uploadFileInput.value = '';
+  };
 
   var onPopupEscPress = function (evt) {
     keyboard.isEscEvent(evt, closePopup);
@@ -23,8 +32,8 @@
   // открывает попап
   var openPopup = function () {
     document.querySelector('body').classList.add('modal-open');
-    effectsSlider.classList.add('hidden');
     uploadOverlay.classList.remove('hidden');
+    effectSlider.classList.add('hidden');
     // + обработчики
     closeBtn.addEventListener('click', closePopup);
     document.addEventListener('keydown', onPopupEscPress);
@@ -34,13 +43,12 @@
   var closePopup = function () {
     document.querySelector('body').classList.remove('modal-open');
     uploadOverlay.classList.add('hidden');
+    resetFormValues();
     // - обработчики
     closeBtn.removeEventListener('click', openPopup);
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
-  // Если окно открыто и фокус находится на кнопке закрытия окна,
-  // то нажатие клавиши ENTER должно приводить к закрытию диалога
   closeBtn.addEventListener('keydown', function (evt) {
     keyboard.isEscEvent(evt, closePopup);
   });
@@ -70,17 +78,27 @@
     keyboard.isEnterEvent(evt, openPopup);
   });
 
-  var onUploadFormSubmit = function (evt) {
+  var onUpload = function () {
+    closePopup();
+    userMessage.showSuccess();
+  };
+
+  var onError = function () {
+    closePopup();
+    userMessage.showError();
+  };
+
+  var onFormSubmit = function (evt) {
     evt.preventDefault();
 
-    var isFormValid = checkForm();
+    var isFormValid = validation.checkForm();
+
     if (isFormValid) {
-      // var formData = new FormData(form);
-    } else {
-      window.console.log('Форма невалидна');
+      var formData = new FormData(form);
+      window.api.uploadData(formData, onUpload, onError);
     }
   };
 
+  form.addEventListener('submit', onFormSubmit);
   uploadBtn.addEventListener('change', openPopup);
-  uploadForm.addEventListener('submit', onUploadFormSubmit);
 })();
