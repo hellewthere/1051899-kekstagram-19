@@ -6,7 +6,6 @@
   var closeBigPictureBtn = document.querySelector('#picture-cancel');
   var picturesContainer = document.querySelector('.pictures');
   var keyboard = window.utils.keyboard;
-  var data = window.data.createPhotos();
   // console.log(utils);
 
   // createCommentItem будет принимать объект с данными коммента, и заполнять шаблон
