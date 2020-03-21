@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   var data = {};
 
   var COUNT = 25;
