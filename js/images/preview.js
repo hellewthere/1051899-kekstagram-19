@@ -1,53 +1,33 @@
 'use strict';
 
 (function () {
-// добавляет класс по пункту 3 и обращается к главному объекту по классу
   var bigPicture = document.querySelector('.big-picture');
+  var socialCommentCount = bigPicture.querySelector('.social__comment-count span');
+  var loader = bigPicture.querySelector('.comments-loader');
+  var commentsNode = bigPicture.querySelector('.social__comments');
   var closeBigPictureBtn = document.querySelector('#picture-cancel');
   var picturesContainer = document.querySelector('.pictures');
-  var keyboard = window.utils.keyboard;
-  // console.log(utils);
+  var commentsLoaderCount = 0;
+  var COMMENTS_AMOUNT = 5;
 
-  // createCommentItem будет принимать объект с данными коммента, и заполнять шаблон
+  var keyboard = window.utils.keyboard;
+
+  var loadingComments = [];
+
+  var removeNodes = function (node) {
+    while (node.firstChild) {
+      node.firstChild.remove();
+    }
+  };
+
   var createCommentItem = function (commentObj) {
     var commentItemTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
     var commentItem = commentItemTemplate.cloneNode(true);
+
     commentItem.querySelector('.social__picture').src = commentObj.avatar;
     commentItem.querySelector('.social__picture').alt = commentObj.name;
     commentItem.querySelector('.social__text').textContent = commentObj.message;
     return commentItem;
-  };
-
-  var createComments = function (photoComments) {
-  // контейнер для нод вне дом-дерева
-    var fragment = document.createDocumentFragment();
-    // метод выполняет функцию 1раз для каждого элемента массива
-    photoComments.comments.forEach(function (commentObj) {
-      // createCommentItem() вставляет новый элемент ДОМ в конец fragment
-      fragment.appendChild(createCommentItem(commentObj));
-    });
-    return fragment;
-  };
-
-  // заполняет информацией главный объект
-  var getBigPicture = function (pictureData) {
-    var commentsNode = bigPicture.querySelector('.social__comments');
-    bigPicture.classList.remove('hidden');
-
-    bigPicture.querySelector('.big-picture__img img').src = pictureData.url;
-    bigPicture.querySelector('.likes-count').textContent = pictureData.likes;
-    bigPicture.querySelector('.comments-count').textContent = pictureData.comments.length;
-    bigPicture.querySelector('.social__caption').textContent = pictureData.description;
-    while (commentsNode.firstChild) {
-      commentsNode.firstChild.remove();
-    }
-    commentsNode.appendChild(createComments(pictureData));
-  };
-
-  // прячет элементы по пункту 2.
-  var hideElements = function () {
-    bigPicture.querySelector('.social__comment-count').classList.add('hidden');
-    bigPicture.querySelector('.comments-loader').classList.add('hidden');
   };
 
   var closeBigPicturePopup = function () {
@@ -60,14 +40,73 @@
     keyboard.isEscEvent(evt, closeBigPicturePopup);
   };
 
-  var renderBigPicture = function (pictureId) {
+  var getPictureData = function (data, pictureId) {
     var pictureData = data.find(function (item) {
       return item.id === +pictureId;
     });
+    return pictureData;
+  };
 
-    getBigPicture(pictureData);
+  var fillPictureTemplate = function (pictureData) {
+    bigPicture.querySelector('.big-picture__img img').src = pictureData.url;
+    bigPicture.querySelector('.likes-count').textContent = pictureData.likes;
+    bigPicture.querySelector('.comments-count').textContent = pictureData.comments.length;
+    bigPicture.querySelector('.social__caption').textContent = pictureData.description;
+    bigPicture.querySelector('.social__comment-count span').textContent = commentsLoaderCount;
+    bigPicture.classList.remove('hidden');
+  };
+
+  var renderComments = function (picData) {
+    var fragment = document.createDocumentFragment();
+
+    picData.forEach(function (commentObj) {
+      fragment.appendChild(createCommentItem(commentObj));
+      commentsLoaderCount++;
+    });
+    commentsNode.appendChild(fragment);
+  };
+
+  var updateCountNode = function () {
+    var commentsCount = document.querySelector('.comments-count').textContent;
+    loader.classList.remove('hidden');
+    if (document.querySelectorAll('.social__comment').length === +commentsCount) {
+      loader.classList.add('hidden');
+    }
+  };
+
+  var updateLoader = function (commentsArr) {
+    var tempArray = commentsArr.slice(COMMENTS_AMOUNT, commentsArr.length);
+    if (loadingComments.length === 0) {
+      loadingComments = tempArray.concat();
+    }
+    updateCountNode();
+  };
+
+  var bindListeners = function () {
     closeBigPictureBtn.addEventListener('click', closeBigPicturePopup);
     document.addEventListener('keydown', onCloseBigPictureBtnKeydown);
+  };
+
+  var renderBigPicture = function (pictureId) {
+    var picData = getPictureData(window.data.photos, pictureId);
+    var fiveComments = picData.comments.slice(0, COMMENTS_AMOUNT);
+    commentsLoaderCount = 0;
+
+    removeNodes(commentsNode);
+    renderComments(fiveComments);
+    fillPictureTemplate(picData);
+    updateLoader(picData.comments);
+    bindListeners();
+  };
+
+  var onLoaderClick = function () {
+    var fragment = document.createDocumentFragment();
+    var loaderComments = loadingComments.splice(0, COMMENTS_AMOUNT);
+
+    renderComments(loaderComments);
+    socialCommentCount.textContent = commentsLoaderCount;
+    commentsNode.appendChild(fragment);
+    updateLoader(loadingComments);
   };
 
   var onPicturesContainerClick = function (evt) {
@@ -78,7 +117,6 @@
     renderBigPicture(clickedPicture.id);
   };
 
+  loader.addEventListener('click', onLoaderClick);
   picturesContainer.addEventListener('click', onPicturesContainerClick);
-
-  hideElements();
 })();
