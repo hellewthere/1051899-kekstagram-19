@@ -35,7 +35,7 @@
     }
 
     return result;
-  }
+  };
 
   var keyboard = {
     isEscEvent: function (evt, callback) {
