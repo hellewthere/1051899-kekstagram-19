@@ -46,7 +46,7 @@
   };
 
   var onErrorBookletKeyDown = function (evt) {
-    window.util.isEscEvent(evt, closeErrorBooklet);
+    keyboard.isEscEvent(evt, closeErrorBooklet);
   };
 
   var renderFormBooklet = function () {

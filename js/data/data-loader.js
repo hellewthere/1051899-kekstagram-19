@@ -5,18 +5,18 @@
   var gallery = window.gallery;
   var filters = window.filters;
 
-  var onLoadPictures = function (dataArr) {
-    var photosDataWithId = dataArr.map(function (currentValue, index) {
+  var onLoadPictures = function (loadedPhotos) {
+    var appPhotos = loadedPhotos.map(function (currentValue, index) {
       currentValue.id = index;
       return currentValue;
     });
 
-    data.photos = photosDataWithId;
+    data.photos = appPhotos;
     window.data = data;
 
     filters.initialize();
     gallery.dropPhotos();
-    gallery.renderPhotos(photosDataWithId);
+    gallery.renderPhotos(appPhotos);
   };
 
   var onError = function (errorMessage) {

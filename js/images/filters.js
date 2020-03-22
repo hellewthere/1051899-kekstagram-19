@@ -1,40 +1,30 @@
 'use strict';
 
 (function () {
-  var filters = {};
   var PICTURES_AMOUNT = 10;
   var DEBOUNCE_INTERVAL = 500;
+  var filters = {};
   var filtersForm = document.querySelector('.img-filters__form');
 
   var utils = window.utils;
 
-  var defaultFilter = function (dataArr) {
-    return dataArr;
+  var defaultFilter = function (photos) {
+    return photos;
   };
 
-  var randomFilter = function (dataArr) {
-    var copyDataArr = dataArr.slice(0);
-    var randomPictures = [];
-
-    for (var i = 0; randomPictures.length < PICTURES_AMOUNT; i++) {
-      var randomIndex = utils.getRandomNumber(0, copyDataArr.length - 1);
-      var randomElement = copyDataArr[randomIndex];
-      randomPictures.push(randomElement);
-      randomPictures.splice(randomIndex, 1);
-    }
-
-    return randomPictures;
+  var randomFilter = function (photos) {
+    return utils.fisherYates(photos, PICTURES_AMOUNT);
   };
 
-  var discussedFilter = function (dataArr) {
-    var discussedPictures = dataArr.slice(0);
+  var discussedFilter = function (photos) {
+    var discussedPictures = photos.slice(0);
     discussedPictures.sort(function (a, b) {
       return b.comments.length - a.comments.length;
     });
     return discussedPictures;
   };
 
-  var filtersType = {
+  var FILTERS_TYPE = {
     'filter-default': defaultFilter,
     'filter-random': randomFilter,
     'filter-discussed': discussedFilter
@@ -57,7 +47,7 @@
     var photosData = window.data.photos;
     var gallery = window.gallery;
     var currentFilter = evt.target.id;
-    var filtredData = filtersType[currentFilter](photosData);
+    var filtredData = FILTERS_TYPE[currentFilter](photosData);
 
     gallery.dropPhotos();
     gallery.renderPhotos(filtredData);
