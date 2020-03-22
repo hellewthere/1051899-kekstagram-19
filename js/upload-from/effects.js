@@ -10,7 +10,7 @@
 
   var currentEffect = null;
 
-  var EFFECT = {
+  var Effect = {
     NONE: {
       className: 'effects__preview--none',
     },
@@ -53,7 +53,7 @@
 
   var onEffectsListClick = function (evt) {
     slider.resetValues();
-    currentEffect = EFFECT[evt.target.value.toUpperCase()];
+    currentEffect = Effect[evt.target.value.toUpperCase()];
     fullsizePhoto.className = 'img-upload__preview ' + currentEffect.className;
     fullsizePhoto.style.filter = '';
     effectSlider.classList.add('hidden');
@@ -65,7 +65,7 @@
 
   var resetEffect = function () {
     effectsList.querySelector('#effect-none').checked = true;
-    fullsizePhoto.className = 'img-upload__preview ' + EFFECT.NONE.className;
+    fullsizePhoto.className = 'img-upload__preview ' + Effect.NONE.className;
   };
 
   var setEffect = function (value) {

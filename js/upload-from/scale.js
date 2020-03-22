@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var SCALE_PARAM = {
+  var ScaleParam = {
     MAX: 100,
     MIN: 25,
     STEP: 25,
@@ -16,21 +16,21 @@
   var photoSize = {};
 
   var resetPhotoSize = function () {
-    scaleControlInput.value = SCALE_PARAM.MAX + SCALE_PARAM.MEASURE;
+    scaleControlInput.value = ScaleParam.MAX + ScaleParam.MEASURE;
     fullsizePhoto.style.transform = '';
   };
 
   var setPhotoSize = function (value) {
-    scaleControlInput.value = value + SCALE_PARAM.MEASURE;
+    scaleControlInput.value = value + ScaleParam.MEASURE;
     fullsizePhoto.style.transform = 'scale(' + value / 100 + ')';
   };
 
   var onScaleButtonClick = function (evt) {
-    if (evt.target.classList.contains('scale__control--bigger') && scaleControlValue < SCALE_PARAM.MAX) {
-      scaleControlValue = scaleControlValue + SCALE_PARAM.STEP;
+    if (evt.target.classList.contains('scale__control--bigger') && scaleControlValue < ScaleParam.MAX) {
+      scaleControlValue = scaleControlValue + ScaleParam.STEP;
     }
-    if (evt.target.classList.contains('scale__control--smaller') && scaleControlValue > SCALE_PARAM.MIN) {
-      scaleControlValue = scaleControlValue - SCALE_PARAM.STEP;
+    if (evt.target.classList.contains('scale__control--smaller') && scaleControlValue > ScaleParam.MIN) {
+      scaleControlValue = scaleControlValue - ScaleParam.STEP;
     }
     setPhotoSize(scaleControlValue);
   };

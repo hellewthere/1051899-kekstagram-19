@@ -4,10 +4,10 @@
   var HASHTAGS_MAX_COUNT = 5;
   var HASHTAG_REG_EXP = /^#([а-я]|[А-Я]|[a-zA-Z]|[0-9]){1,20}$/;
 
-  var USER_MESSAGE = {
+  var UserMessage = {
     LESS_THEN_FIVE: 'Нельзя указать больше пяти хэш-тегов',
-    NO_DUPLICATES: 'один и тот же хэш-тег не может быть использован дважды',
-    CORRECT: 'Не верный формат хештега'
+    NO_DUPLICATES: 'Один и тот же хэш-тег не может быть использован дважды',
+    CORRECT: 'Неверный формат хештега'
   };
 
   var inputHashtags = document.querySelector('.text__hashtags');
@@ -28,15 +28,15 @@
     inputHashtags.setCustomValidity('');
 
     if (!isHashtagsLessThanFive) {
-      inputHashtags.setCustomValidity(USER_MESSAGE.LESS_THEN_FIVE);
+      inputHashtags.setCustomValidity(UserMessage.LESS_THEN_FIVE);
     }
 
     if (!isHashtagCorrect) {
-      inputHashtags.setCustomValidity(USER_MESSAGE.CORRECT);
+      inputHashtags.setCustomValidity(UserMessage.CORRECT);
     }
 
     if (!isHastagsNoDuplicates) {
-      inputHashtags.setCustomValidity(USER_MESSAGE.NO_DUPLICATES);
+      inputHashtags.setCustomValidity(UserMessage.NO_DUPLICATES);
     }
 
     if (isHashtagCorrect && isHastagsNoDuplicates && isHashtagsLessThanFive) {

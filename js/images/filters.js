@@ -24,7 +24,7 @@
     return discussedPictures;
   };
 
-  var FILTERS_TYPE = {
+  var filterTypeToAction = {
     'filter-default': defaultFilter,
     'filter-random': randomFilter,
     'filter-discussed': discussedFilter
@@ -47,7 +47,7 @@
     var photosData = window.data.photos;
     var gallery = window.gallery;
     var currentFilter = evt.target.id;
-    var filtredData = FILTERS_TYPE[currentFilter](photosData);
+    var filtredData = filterTypeToAction[currentFilter](photosData);
 
     gallery.dropPhotos();
     gallery.renderPhotos(filtredData);
