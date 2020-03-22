@@ -9,46 +9,51 @@
   var slider = window.slider;
 
   var currentEffect = null;
-  // Наложение эффекта на изображение
-  var effect = {
-    none: {
+
+  var EFFECT = {
+    NONE: {
       className: 'effects__preview--none',
     },
-    chrome: {
+    CHROME: {
       type: 'grayscale',
       className: 'effects__preview--chrome',
+      min: 0,
       max: 1,
       units: ''
     },
-    sepia: {
+    SEPIA: {
       type: 'sepia',
       className: 'effects__preview--sepia',
+      min: 0,
       max: 1,
       units: ''
     },
-    marvin: {
+    MARVIN: {
       type: 'invert',
       className: 'effects__preview--marvin',
+      min: 0,
       max: 100,
       units: '%'
     },
-    phobos: {
+    PHOBOS: {
       type: 'blur',
       className: 'effects__preview--phobos',
+      min: 0,
       max: 3,
       units: 'px'
     },
-    heat: {
+    HEAT: {
       type: 'brightness',
       className: 'effects__preview--heat',
-      max: 3,
+      min: 1,
+      max: 2,
       units: ''
     }
   };
 
   var onEffectsListClick = function (evt) {
     slider.resetValues();
-    currentEffect = effect[evt.target.value];
+    currentEffect = EFFECT[evt.target.value.toUpperCase()];
     fullsizePhoto.className = 'img-upload__preview ' + currentEffect.className;
     fullsizePhoto.style.filter = '';
     effectSlider.classList.add('hidden');
@@ -60,12 +65,12 @@
 
   var resetEffect = function () {
     effectsList.querySelector('#effect-none').checked = true;
-    fullsizePhoto.className = 'img-upload__preview ' + effect.none.className;
+    fullsizePhoto.className = 'img-upload__preview ' + EFFECT.NONE.className;
   };
 
   var setEffect = function (value) {
     if (currentEffect) {
-      var filterValue = currentEffect.type + '(' + value * currentEffect.max + currentEffect.units + ')';
+      var filterValue = currentEffect.type + '(' + (value * currentEffect.max + currentEffect.min) + currentEffect.units + ')';
       fullsizePhoto.style.filter = filterValue;
     }
   };

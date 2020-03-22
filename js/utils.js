@@ -23,6 +23,20 @@
     return randomNum > minNumber ? randomNum : minNumber;
   };
 
+  var fisherYates = function (array, length) {
+    var len = length < array.length ? length : array.length;
+    var copy = array.slice(0);
+    var result = [];
+    var temp;
+
+    for (var i = 0; i < len; i++) {
+      temp = getRandomNumber(0, copy.length - 1);
+      result.push(copy.splice(temp, 1)[0]);
+    }
+
+    return result;
+  }
+
   var keyboard = {
     isEscEvent: function (evt, callback) {
       if (evt.key === ESC_KEY) {
@@ -37,6 +51,7 @@
   };
 
   utils.getRandomNumber = getRandomNumber;
+  utils.fisherYates = fisherYates;
   utils.keyboard = keyboard;
   utils.debounce = debounce;
   window.utils = utils;

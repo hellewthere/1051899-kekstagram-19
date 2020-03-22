@@ -6,13 +6,13 @@
   var TIMEOUT = 5000;
   var api = {};
 
-  var serverMessage = {
+  var SERVER_MESSAGE = {
     PAGE_SUCCESS: 200,
     PAGE_NOT_FOUND: 404,
     SERVER_ERROR: 500
   };
 
-  var userMessage = {
+  var USER_MESSAGE = {
     PAGE_NOT_FOUND: 'Страница не найдена',
     SERVER_ERROR: 'Ошибка сервера',
     DEFAULT: 'Неизвестный статус: ',
@@ -26,26 +26,26 @@
 
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
-        case serverMessage.PAGE_SUCCESS:
+        case SERVER_MESSAGE.PAGE_SUCCESS:
           onLoad(xhr.response);
           break;
-        case serverMessage.PAGE_NOT_FOUND:
-          onError(userMessage.PAGE_NOT_FOUND);
+        case SERVER_MESSAGE.PAGE_NOT_FOUND:
+          onError(USER_MESSAGE.PAGE_NOT_FOUND);
           break;
-        case serverMessage.SERVER_ERROR:
-          onError(userMessage.SERVER_ERROR);
+        case SERVER_MESSAGE.SERVER_ERROR:
+          onError(USER_MESSAGE.SERVER_ERROR);
           break;
         default:
-          onError(userMessage.DEFAULT + xhr.status + '' + xhr.statusText);
+          onError(USER_MESSAGE.DEFAULT + xhr.status + '' + xhr.statusText);
       }
     });
 
     xhr.addEventListener('error', function () {
-      onError(userMessage.CONNECTION_FAIL);
+      onError(USER_MESSAGE.CONNECTION_FAIL);
     });
 
     xhr.addEventListener('timeout', function () {
-      onError(userMessage.TIMEOUT_FAIL + xhr.timeout + 'мс');
+      onError(USER_MESSAGE.TIMEOUT_FAIL + xhr.timeout + 'мс');
     });
 
     xhr.timeout = TIMEOUT;
