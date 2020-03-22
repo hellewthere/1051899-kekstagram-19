@@ -10,40 +10,40 @@
 
   var currentEffect = null;
 
-  var Effect = {
-    NONE: {
+  var effectToType = {
+    none: {
       className: 'effects__preview--none',
     },
-    CHROME: {
-      type: 'grayscale',
+    chrome: {
+      name: 'grayscale',
       className: 'effects__preview--chrome',
       min: 0,
       max: 1,
       units: ''
     },
-    SEPIA: {
-      type: 'sepia',
+    sepia: {
+      name: 'sepia',
       className: 'effects__preview--sepia',
       min: 0,
       max: 1,
       units: ''
     },
-    MARVIN: {
-      type: 'invert',
+    marvin: {
+      name: 'invert',
       className: 'effects__preview--marvin',
       min: 0,
       max: 100,
       units: '%'
     },
-    PHOBOS: {
-      type: 'blur',
+    phobos: {
+      name: 'blur',
       className: 'effects__preview--phobos',
       min: 0,
       max: 3,
       units: 'px'
     },
-    HEAT: {
-      type: 'brightness',
+    heat: {
+      name: 'brightness',
       className: 'effects__preview--heat',
       min: 1,
       max: 2,
@@ -53,7 +53,7 @@
 
   var onEffectsListClick = function (evt) {
     slider.resetValues();
-    currentEffect = Effect[evt.target.value.toUpperCase()];
+    currentEffect = effectToType[evt.target.value];
     fullsizePhoto.className = 'img-upload__preview ' + currentEffect.className;
     fullsizePhoto.style.filter = '';
     effectSlider.classList.add('hidden');
@@ -65,12 +65,12 @@
 
   var resetEffect = function () {
     effectsList.querySelector('#effect-none').checked = true;
-    fullsizePhoto.className = 'img-upload__preview ' + Effect.NONE.className;
+    fullsizePhoto.className = 'img-upload__preview ' + effectToType['none'].className;
   };
 
   var setEffect = function (value) {
     if (currentEffect) {
-      var filterValue = currentEffect.type + '(' + (value * currentEffect.max + currentEffect.min) + currentEffect.units + ')';
+      var filterValue = currentEffect.name + '(' + (value * currentEffect.max + currentEffect.min) + currentEffect.units + ')';
       fullsizePhoto.style.filter = filterValue;
     }
   };
